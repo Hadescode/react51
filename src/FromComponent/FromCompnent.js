@@ -79,7 +79,7 @@ export default class FromCompnent extends Component {
                 valid = false;
             }
           }
-          console.log(valid);
+          console.log(123);
           if(!valid){
             //   alert('Dử liệu không hợp lệ!');
             Swal.fire({
