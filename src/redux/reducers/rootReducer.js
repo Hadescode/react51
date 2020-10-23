@@ -2,6 +2,7 @@
 import{combineReducers} from 'redux'
 import BaiTapGioHangReducer from './BaiTapGioHangReducer'
 import BaiTapGameXucXacReducer from './BaiTapGameXucXacReducer'
+import{QuanLyNguoiDungReducer} from './QuanLyNguoiDungReducer'
 
 //state tổng của ứng dụng
 export const rootReducer = combineReducers({
@@ -9,7 +10,9 @@ export const rootReducer = combineReducers({
 
     StateBaiTapGioHang: BaiTapGioHangReducer,
 
-    stateBaiTapGameXucXac:BaiTapGameXucXacReducer
+    stateBaiTapGameXucXac:BaiTapGameXucXacReducer,
+
+    QuanLyNguoiDungReducer,
 
     //reducer theo từng nghiệp vụ
 })

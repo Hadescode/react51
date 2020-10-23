@@ -3,23 +3,7 @@ import Swal from "sweetalert2";
 import { connect } from "react-redux";
 import { xoaNguoiDungAction } from "../redux/actions/QuanLyNguoiDungAction";
 
-class FromCompnent extends Component {
-  state = {
-    value: {
-      maNguoiDung: "",
-      tenNguoiDung: "",
-      soDienThoai: "",
-      email: "",
-    },
-    errors: {
-      maNguoiDung: "",
-      tenNguoiDung: "",
-      soDienThoai: "",
-      email: "",
-    },
-    maNguoiDungXoa: "",
-  };
-
+class NewFromCompnent extends Component {
   handleChangeInput = (event) => {
     //Lấy ra name và value
     // let name =event.target.name;
@@ -30,11 +14,11 @@ class FromCompnent extends Component {
 
     // console.log(types)
     // xử lý value
-    let newValues = { ...this.state.value }; //Tạo ra value mới giá trị = value cũ
+    let newValues = { ...this.props.stateFrom.value }; //Tạo ra value mới giá trị = value cũ
     newValues[name] = value; // Thay đối giá trị bên trong values
 
     //xứ lý error
-    let newErrors = { ...this.state.errors };
+    let newErrors = { ...this.props.stateFrom.errors };
     newErrors[name] = value.trim() === "" ? "Đừng hiếp em" : "";
 
     //Validation các trường hợp đặt biệt
@@ -52,35 +36,31 @@ class FromCompnent extends Component {
       }
     }
 
-    this.setState(
-      {
-        value: newValues, // Gán Values =value mối
-        errors: newErrors,
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
-  };
+    // this.setState(
+    //   {
+    //     value: newValues, // Gán Values =value mối
+    //     errors: newErrors,
+    //   },
+    //   () => {
+    //     console.log(this.props.stateFrom);
+    //   }
+    // );
 
-  //Giải pháp 1 sửa dụng lifecycle componentWillReceiverprops
-  //Hàm này chạy khi props thay đổi và trước khi render
-  componentWillReceiveProps(newProps){
-    // khi bấm nút chỉnh sửa  =>props thay đổi ta lấy props từ người dùng chỉnh sửa(this.props.nguoiDungChinhSua) ta gán vào state của component => và cho render value từ state
-    this.setState({
-      value:newProps.nguoiDungChinhSua
-    })
-  }
+    let action ={
+        type:'HANDLE_CHANGE_INPUT',newState:{
+            value:newValues, //gán value = value mới
+            errors:newErrors
+        }
+    }
+
+    //Gứi lên reducer stateFrom mới
+    this.props.dispatch(action);
+  };
 
   render() {
     //Lấy giá trị từ QuanLyNguoiDungReducer.nguoiDungChinhSua
 
-    let {
-      maNguoiDung,
-      tenNguoiDung,
-      soDienThoai,
-      email,
-    } = this.state.value;
+    let { maNguoiDung, tenNguoiDung, soDienThoai, email } = this.props.stateFrom.value;
 
     return (
       <form
@@ -91,13 +71,13 @@ class FromCompnent extends Component {
 
           let valid = true;
           //Duyệt thuộc tính trong object values (duyệt thuộc tính trong đối tượng thì dùng ES6 for in)
-          for (let tenThuocTinh in this.state.value) {
-            if (this.state.value[tenThuocTinh].trim() === "") {
+          for (let tenThuocTinh in this.props.stateFrom.value) {
+            if (this.props.stateFrom.value[tenThuocTinh].trim() === "") {
               valid = false;
             }
           }
-          for (let tenThuocTinh in this.state.errors) {
-            if (this.state.errors[tenThuocTinh].trim() !== "") {
+          for (let tenThuocTinh in this.props.stateFrom.errors) {
+            if (this.props.stateFrom.errors[tenThuocTinh].trim() !== "") {
               valid = false;
             }
           }
@@ -114,6 +94,10 @@ class FromCompnent extends Component {
           }
 
           console.log("submit");
+          let action ={
+              type:'THEM_NGUOI_DUNG',
+              nguoiDung:this.props.stateFrom.value
+          }
         }}
       >
         <div className="card-header bg-dark text-light font-weight-bold">
@@ -131,7 +115,7 @@ class FromCompnent extends Component {
                   name="maNguoiDung"
                   onChange={this.handleChangeInput}
                 />
-                <p className="text-danger">{this.state.errors.maNguoiDung}</p>
+                <p className="text-danger">{this.props.stateFrom.errors.maNguoiDung}</p>
               </div>
 
               <div className="form-group">
@@ -142,7 +126,7 @@ class FromCompnent extends Component {
                   name="tenNguoiDung"
                   onChange={this.handleChangeInput}
                 />
-                <p className="text-danger">{this.state.errors.tenNguoiDung}</p>
+                <p className="text-danger">{this.props.stateFrom.errors.tenNguoiDung}</p>
               </div>
             </div>
             <div className="col-6">
@@ -155,7 +139,7 @@ class FromCompnent extends Component {
                   name="soDienThoai"
                   onChange={this.handleChangeInput}
                 />
-                <p className="text-danger">{this.state.errors.soDienThoai}</p>
+                <p className="text-danger">{this.props.stateFrom.errors.soDienThoai}</p>
               </div>
               <div className="form-group">
                 <span>Email</span>
@@ -166,12 +150,21 @@ class FromCompnent extends Component {
                   name="email"
                   onChange={this.handleChangeInput}
                 />
-                <p className="text-danger">{this.state.errors.email}</p>
+                <p className="text-danger">{this.props.stateFrom.errors.email}</p>
               </div>
             </div>
-            <div className="col-12 text-center">
+            <div className="col-12 text-right">
               <button className="btn btn-success">Thêm Người Dùng</button>
             </div>
+
+            <button type="button" className="btn btn-primary" onClick={() =>{
+                let action ={
+                    type:'CAP_NHAT_THONG_TIN',
+                    nguoiDungCapNhat:this.props.stateFrom.value
+                }
+                this.props.dispatch(action);
+            }}>Cập nhật thông tin</button>
+
             <div className="col-12">
               <input
                 name="maNguoiDungxXoa"
@@ -188,7 +181,7 @@ class FromCompnent extends Component {
                 className="btn btn-danger"
                 onClick={() => {
                   //dispatch mã người dùng lên reducer XOA_NGUOI_DUNG
-                  let action = xoaNguoiDungAction(this.state.maNguoiDungXoa);
+                  let action = xoaNguoiDungAction(this.props.stateFrom.maNguoiDungXoa);
                   this.props.dispatch(action);
                 }}
               >
@@ -202,10 +195,12 @@ class FromCompnent extends Component {
   }
 }
 
-const mapStateToProps =state =>{
-  return{
-    nguoiDungChinhSua: state.QuanLyNguoiDungReducer.nguoiDungChinhSua
-  }
-}
+const mapStateToProps = (state) => {
+  return {
+    nguoiDungChinhSua: state.QuanLyNguoiDungReducer.nguoiDungChinhSua,
+    stateFrom: state.QuanLyNguoiDungReducer.stateFrom, 
+    //lấy state from từ redux về => binding lên hàm render
+  };
+};
 
-export default connect(mapStateToProps)(FromCompnent);
+export default connect(mapStateToProps)(NewFromCompnent);
