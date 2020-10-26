@@ -16,6 +16,12 @@ import BaiTapGameXuxXac from "./BaitapRedux/BaiTapGameXucXac/BaiTapGameXuxXac";
 import LifeCycle from "./LifeCycle/LifeCycle";
 import FromCompnent from "./FromComponent/FromCompnent";
 import DanhSachNguoiDung from "./FromComponent/DanhSachNguoiDung";
+import DemoHookUseState from "./Hooks/DemoHookUseState/DemoHookUseState";
+import BaiTapDoiMauXe from "./Hooks/DemoHookUseState/BaiTapDoiMauXe";
+import DemoHookUseEffect from "./Hooks/DemoHookUseEffect/DemoHookUseEffect";
+import DemoUseCallback from "./Hooks/DemoUseCallback/DemoUseCallback";
+import DemoHookUseMemo from "./Hooks/DemoHookUseMemo/DemoHookUseMemo";
+import GameXucXacReactF from "./Hooks/GameXucXacReactF/GameXucXacReactF";
 
 function App() {
   return (
@@ -33,7 +39,13 @@ function App() {
       {/* <BaiTapGioHangRedux/> */}
       {/* <BaiTapGameXuxXac/> */}
       {/* <LifeCycle/> */}
-      <DanhSachNguoiDung/>
+      {/* <DanhSachNguoiDung/> */}
+      {/* <DemoHookUseState/> */}
+      {/* <BaiTapDoiMauXe/> */}
+      {/* <DemoHookUseEffect/> */}
+      {/* <DemoUseCallback/> */}
+      {/* <DemoHookUseMemo/> */}
+      <GameXucXacReactF/>
     </div>
   );
 }
